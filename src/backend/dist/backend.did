@@ -1,0 +1,179 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfile = 
+ record {
+   avatar: opt ExternalBlob;
+   besties: vec principal;
+   name: text;
+ };
+type UnboxingType = 
+ variant {
+   cdStickerPeeler;
+   cloverField;
+   fruitSoda;
+   musicBox;
+   openWhen;
+   polaroidStack;
+   secretLocket;
+   strawberryJar;
+ };
+type Timestamp = int;
+type ScrapbookPost = 
+ record {
+   author: principal;
+   createdAt: int;
+   id: text;
+   note: text;
+   photoKey: text;
+ };
+type ScrapbookId = text;
+type Scrapbook = 
+ record {
+   createdAt: int;
+   creator: principal;
+   id: ScrapbookId;
+   members: vec principal;
+   name: text;
+   posts: vec ScrapbookPost;
+ };
+type Photo = record {"blob": ExternalBlob;};
+type PhoneStrap = 
+ record {
+   charms: vec Charm;
+   owner: principal;
+ };
+type MusicLoop = 
+ variant {
+   kawaiiPop;
+   lofi;
+ };
+type LetterId = text;
+type Letter = 
+ record {
+   createdAt: Timestamp;
+   envelopeTexture: EnvelopeTexture;
+   id: LetterId;
+   isRead: bool;
+   musicLoop: opt MusicLoop;
+   note: text;
+   openWhenTime: opt Timestamp;
+   patternKey: opt text;
+   photos: vec Photo;
+   receiverLink: text;
+   secretNote: opt text;
+   sender: principal;
+   unboxingType: UnboxingType;
+ };
+type ExternalBlob = blob;
+type EnvelopeTexture = 
+ variant {
+   frosted;
+   gingham;
+   holographic;
+ };
+type CreateLetterInput = 
+ record {
+   envelopeTexture: EnvelopeTexture;
+   musicLoop: opt MusicLoop;
+   note: text;
+   openWhenTime: opt Timestamp;
+   patternKey: opt text;
+   photos: vec Photo;
+   receiverLink: text;
+   secretNote: opt text;
+   unboxingType: UnboxingType;
+ };
+type CharmType = 
+ variant {
+   custom;
+   preset;
+ };
+type Charm = 
+ record {
+   charmType: CharmType;
+   customKey: opt text;
+   id: text;
+   labelText: text;
+   position: nat;
+   presetId: text;
+ };
+type AlbumId = text;
+type AlbumEntry = 
+ record {
+   addedAt: int;
+   contributor: principal;
+   note: text;
+   photoKeys: vec text;
+ };
+type Album = 
+ record {
+   completed: bool;
+   createdAt: int;
+   creator: principal;
+   currentHolderIdx: nat;
+   entries: vec AlbumEntry;
+   id: AlbumId;
+   memberQueue: vec principal;
+   name: text;
+   theme: text;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  addAlbumContent: (albumId: AlbumId, photoKeys: vec text, note: text) ->
+   (bool);
+  addBestie: (bestie: principal) -> ();
+  addCharm: (charm: Charm) -> ();
+  addScrapbookPost: (scrapbookId: ScrapbookId, photoKey: text, note: 
+   text) -> (bool);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createAlbum: (name: text, theme: text, members: vec principal) -> (AlbumId);
+  createLetter: (input: CreateLetterInput) -> (LetterId);
+  createScrapbook: (name: text, members: vec principal) -> (ScrapbookId);
+  getAlbum: (id: AlbumId) -> (opt Album) query;
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getInbox: (receiverLink: text) -> (vec Letter) query;
+  getLetter: (id: LetterId) -> (opt Letter) query;
+  getMyAlbums: () -> (vec Album) query;
+  getMyScrapbooks: () -> (vec Scrapbook) query;
+  getMyStrap: () -> (PhoneStrap) query;
+  getScrapbook: (id: ScrapbookId) -> (opt Scrapbook) query;
+  getScrapbookPosts: (id: ScrapbookId) -> (opt vec ScrapbookPost) query;
+  getSent: () -> (vec Letter) query;
+  getUserProfile: (user: principal) -> (opt UserProfile) query;
+  isCallerAdmin: () -> (bool) query;
+  markRead: (id: LetterId) -> ();
+  passAlbum: (albumId: AlbumId) -> (bool);
+  removeBestie: (bestie: principal) -> ();
+  removeCharm: (charmId: text) -> (bool);
+  reorderCharms: (charmIds: vec text) -> (bool);
+  saveCallerUserProfile: (profile: UserProfile) -> ();
+  saveMyStrap: (charms: vec Charm) -> ();
+  setProfile: (profile: UserProfile) -> ();
+}

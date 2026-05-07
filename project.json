@@ -1,0 +1,26 @@
+{
+  "overview": "VibeMail is a digital scrapbook-style messaging app where messages are collectible aesthetic objects. Inspired by Japanese retro stationery, fruity kawaii, and juminocore — the app lets you compose and unbox letters with photos, handwritten notes, stamps, wax seals, polaroid frames, and layered decorative elements that feel like physical stationery objects.",
+  "features": [
+    "Juminocore visual design system with warm cream, apple green, and cherry red palette",
+    "2-column inbox grid with varied tile shapes (fruit cards, parcels, drink cups, stamp squares)",
+    "Compose screen with stacked rotated note/photo/music cards and preview container",
+    "Scrapbook-style message view with overlapping elements and stamp-style header",
+    "Visual identity board profile with charm clusters and collections grid",
+    "Collectible card friend list with pastel fruit-label themes",
+    "8 unboxing animations using real assets (locket, soda float, clover field, polaroids)",
+    "Handwritten Caveat typography for labels and decorative text",
+    "Real stamp, wax seal, envelope, and paper texture assets throughout"
+  ],
+  "category": "messaging",
+  "tags": [
+    "kawaii",
+    "juminocore",
+    "scrapbook",
+    "stationery",
+    "messaging",
+    "y2k",
+    "collectible",
+    "japanese-retro"
+  ],
+  "last_updated": "2026-05-07T15:21:07.190Z"
+}

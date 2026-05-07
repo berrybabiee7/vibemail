@@ -1,0 +1,133 @@
+// Version: 1.0.0
+type AlbumEntry__610307464 =
+  {addedAt : Int; contributor : Principal; note : Text; photoKeys : [Text]};
+type AlbumId__230877033 = Text;
+type Album__517748038 =
+  {
+    completed : Bool;
+    createdAt : Int;
+    creator : Principal;
+    currentHolderIdx : Nat;
+    entries : [AlbumEntry__610307464];
+    id : AlbumId__230877033;
+    memberQueue : [Principal];
+    name : Text;
+    theme : Text
+  };
+type CharmType__202604509 = {#custom; #preset};
+type Charm__710342421 =
+  {
+    charmType : CharmType__202604509;
+    customKey : ?Text;
+    id : Text;
+    labelText : Text;
+    position : Nat;
+    presetId : Text
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type EnvelopeTexture__811615922 = {#frosted; #gingham; #holographic};
+type ExternalBlob__671167343 = Blob;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type LetterId__221481133 = Text;
+type LetterInternal__628389148 =
+  {
+    createdAt : Timestamp__301639476;
+    envelopeTexture : EnvelopeTexture__811615922;
+    id : LetterId__221481133;
+    var isRead : Bool;
+    musicLoop : ?MusicLoop__234469732;
+    note : Text;
+    openWhenTime : ?Timestamp__301639476;
+    patternKey : ?Text;
+    var photos : [Photo__17621518];
+    receiverLink : Text;
+    secretNote : ?Text;
+    sender : Principal;
+    unboxingType : UnboxingType__229314886
+  };
+type List__415060402<T> = List__790383201<T>;
+type List__790383201<T> =
+  {
+    var blockIndex : Nat__490723111;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__490723111
+  };
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type MusicLoop__234469732 = {#kawaiiPop; #lofi};
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type Photo__17621518 = {blob : ExternalBlob__671167343};
+type ScrapbookId__478134000 = Text;
+type ScrapbookPost__168775862 =
+  {
+    author : Principal;
+    createdAt : Int;
+    id : Text;
+    note : Text;
+    photoKey : Text
+  };
+type Scrapbook__1013674558 =
+  {
+    createdAt : Int;
+    creator : Principal;
+    id : ScrapbookId__478134000;
+    members : [Principal];
+    name : Text;
+    posts : [ScrapbookPost__168775862]
+  };
+type Timestamp__301639476 = Int;
+type UnboxingType__229314886 =
+  {
+    #cdStickerPeeler;
+    #cloverField;
+    #fruitSoda;
+    #musicBox;
+    #openWhen;
+    #polaroidStack;
+    #secretLocket;
+    #strawberryJar
+  };
+type UserProfile__446616884 =
+  {avatar : ?ExternalBlob__671167343; besties : [Principal]; name : Text};
+type UserRole__1073662873 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable albums :
+    {
+      var root : Node__46230540<AlbumId__230877033, Album__517748038>;
+      var size : Nat__490723111
+    };
+  stable letters :
+    {
+      var root :
+        Node__46230540<LetterId__221481133, LetterInternal__628389148>;
+      var size : Nat__490723111
+    };
+  stable profiles :
+    {
+      var root : Node__46230540<Principal, UserProfile__446616884>;
+      var size : Nat__490723111
+    };
+  stable scrapbooks :
+    {
+      var root : Node__46230540<ScrapbookId__478134000, Scrapbook__1013674558>;
+      var size : Nat__490723111
+    };
+  stable straps :
+    {
+      var root : Node__46230540<Principal, List__415060402<Charm__710342421>>;
+      var size : Nat__490723111
+    }
+};
